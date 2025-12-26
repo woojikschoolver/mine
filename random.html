@@ -35,7 +35,7 @@
     }
     .result {
       margin-top: 20px;
-      font-size: 48px;
+      font-size: 52px;
       font-weight: bold;
     }
   </style>
@@ -52,13 +52,33 @@
   </div>
 
   <script>
+    let rolling = false;
+
     function draw() {
-      const min = Number(document.getElementById("min").value);
-      const max = Number(document.getElementById("max").value);
+      if (rolling) return;
+
+      const min = Number(minInput.value);
+      const max = Number(maxInput.value);
       if (min > max) return alert("범위가 이상해요");
-      const n = Math.floor(Math.random() * (max - min + 1)) + min;
-      document.getElementById("result").textContent = n;
+
+      rolling = true;
+      const resultEl = document.getElementById("result");
+
+      const interval = setInterval(() => {
+        const temp = Math.floor(Math.random() * (max - min + 1)) + min;
+        resultEl.textContent = temp;
+      }, 50);
+
+      setTimeout(() => {
+        clearInterval(interval);
+        const final = Math.floor(Math.random() * (max - min + 1)) + min;
+        resultEl.textContent = final;
+        rolling = false;
+      }, 1200);
     }
+
+    const minInput = document.getElementById("min");
+    const maxInput = document.getElementById("max");
   </script>
 </body>
 </html>
